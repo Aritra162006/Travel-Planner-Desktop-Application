@@ -4,9 +4,9 @@ A modern cross-platform desktop application built with **Electron**, **React**, 
 
 ## 🌟 Highlights & Features
 
-- **Intuitive Visual Planning**: Plan trips with structured details including destination, travel dates, duration, budget, and travel interests.
+- **Intuitive Trip Planning**: Plan trips with structured details including destination, travel dates, duration, day-by-day activities, and a 5-category budget.
 - **Day-by-Day Itinerary Builder**: Organize scheduled activities per day with an intuitive interactive planner.
-- **Destination Cards**: Showcase destination imagery (pre-curated presets or custom uploads) with key trip metadata.
+- **Trip Overview Cards**: Clean cards showcasing destination, travel dates, duration, activity counts, total budget, and quick actions.
 - **Budget Distribution Chart**: Interactive graphical breakdown of expenses across 5 key categories (Transport, Accommodation, Food, Activities, Miscellaneous) powered by Chart.js.
 - **Zero-Cloud Local Persistence**: Secure, offline storage storing data directly on disk in JSON format via Electron's inter-process communication (IPC).
 - **Clean Aesthetic**: Soft pastel aesthetic designed with custom CSS tokens for a lightweight and responsive desktop experience.

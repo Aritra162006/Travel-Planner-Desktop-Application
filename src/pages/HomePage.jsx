@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { resolveImage, DEFAULT_IMAGE } from '../utils/images';
 import './HomePage.css';
 
 /**
@@ -109,14 +108,7 @@ function HomePage({ onNavigate }) {
                 className="recent-trip-item card"
                 onClick={() => onNavigate('saved-trips')}
               >
-                <img
-                  src={resolveImage(trip.image)}
-                  alt={trip.destination}
-                  className="recent-thumb"
-                  onError={(e) => {
-                    e.target.src = DEFAULT_IMAGE;
-                  }}
-                />
+                <div className="recent-icon-badge">📍</div>
                 <div className="recent-info">
                   <h4 className="recent-dest">{trip.destination}</h4>
                   <span className="recent-meta">

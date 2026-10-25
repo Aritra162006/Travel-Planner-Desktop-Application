@@ -1,20 +1,19 @@
 import React from 'react';
 import BudgetChart from '../components/BudgetChart';
-import { resolveImage, DEFAULT_IMAGE } from '../utils/images';
 import './TripDetailView.css';
 
 /**
  * TripDetailView — In-depth view for a saved trip.
  *
  * Displays:
- *   - Destination banner image & metadata
- *   - Travel interests
+ *   - Destination title & trip metadata
  *   - Day-by-day itinerary schedule
  *   - Visual Budget Breakdown with Chart.js Pie chart
  *
  * Props:
  *   trip (object) - Full trip object
  *   onBack (function) - Callback to return to trips gallery
+ *   onDelete (function) - Callback to delete this trip
  */
 function TripDetailView({ trip, onBack, onDelete }) {
   if (!trip) return null;
@@ -23,9 +22,7 @@ function TripDetailView({ trip, onBack, onDelete }) {
     destination = 'Unknown Destination',
     startDate,
     days = 1,
-    image,
     budget = {},
-    interests = [],
     itinerary = []
   } = trip;
 
@@ -56,27 +53,17 @@ function TripDetailView({ trip, onBack, onDelete }) {
         )}
       </div>
 
-      {/* Hero Banner */}
-      <div className="detail-banner card">
-        <img
-          src={resolveImage(image)}
-          alt={destination}
-          className="banner-image"
-          onError={(e) => {
-            e.target.src = DEFAULT_IMAGE;
-          }}
-        />
-        <div className="banner-overlay">
-          <div className="banner-tags">
-            <span className="banner-pill duration">{days} {days === 1 ? 'Day' : 'Days'}</span>
-            <span className="banner-pill budget">₹{(budget.total || 0).toLocaleString('en-IN')} Total</span>
-          </div>
-          <h1 className="banner-title">{destination}</h1>
-          <p className="banner-date">🗓️ Starts: {formattedDate}</p>
+      {/* Header Summary Card */}
+      <div className="detail-header-card card">
+        <div className="header-meta-row">
+          <span className="banner-pill duration">{days} {days === 1 ? 'Day' : 'Days'} Trip</span>
+          <span className="banner-pill budget">₹{(budget.total || 0).toLocaleString('en-IN')} Total Budget</span>
         </div>
+        <h1 className="detail-dest-title">📍 {destination}</h1>
+        <p className="detail-date-text">🗓️ Scheduled Start: {formattedDate}</p>
       </div>
 
-      {/* Main Grid: Itinerary (Left) & Budget / Info (Right) */}
+      {/* Main Grid: Itinerary (Left) & Budget (Right) */}
       <div className="detail-grid">
         {/* Left Column: Itinerary */}
         <div className="detail-left-col">
@@ -113,23 +100,8 @@ function TripDetailView({ trip, onBack, onDelete }) {
           </section>
         </div>
 
-        {/* Right Column: Budget Breakdown Chart & Interests */}
+        {/* Right Column: Budget Breakdown Chart */}
         <div className="detail-right-col">
-          {/* Interests Card */}
-          {interests && interests.length > 0 && (
-            <section className="interests-card card">
-              <h4 className="detail-subheading">🎯 Travel Interests</h4>
-              <div className="detail-interests-wrap">
-                {interests.map((interest, idx) => (
-                  <span key={idx} className="detail-interest-chip">
-                    {interest}
-                  </span>
-                ))}
-              </div>
-            </section>
-          )}
-
-          {/* Budget Breakdown Chart Card */}
           <section className="budget-chart-card card">
             <h4 className="detail-subheading">📊 Budget Distribution</h4>
             <p className="chart-description">

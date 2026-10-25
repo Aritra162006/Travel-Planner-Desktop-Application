@@ -35,9 +35,8 @@ Welcome! This is an excellent topic for a desktop application. Since you want to
 1. **Data Storage Approach**: How should saved trips be persisted on the local machine?
 2. **UI Framework**: What frontend library or framework do you want to use inside Electron's renderer process?
 3. **Budget Chart Library**: How should the budget breakdown chart be rendered visually?
-4. **Destination Imagery**: Where should the images on destination cards come from?
-5. **Trip Itinerary Structure**: How should users structure their trip itineraries?
-6. **Budget Categories**: What expense categories should be tracked in the budget breakdown?
+4. **Trip Itinerary Structure**: How should users structure their trip itineraries?
+5. **Budget Categories**: What expense categories should be tracked in the budget breakdown?
 
 Please share your decisions on these areas.
 
@@ -53,11 +52,9 @@ Here are my decisions:
 
 3. **Chart Library:** **Chart.js**. It provides clean charts, supports smooth animations, and integrates well with React.
 
-4. **Destination Images:** **Both (Hybrid)**. Provide pre-bundled presets (Beach, Mountains, City, Temple, Forest) for quick selection, but also allow custom photo uploads.
+4. **Itinerary Structure:** **User builds their own itinerary**. The user should be able to type in any destination and specify their own activities per day without rigid presets.
 
-5. **Itinerary Structure:** **User builds their own itinerary**. The user should be able to type in any destination and specify their own activities.
-
-6. **Budget Categories:** **5 categories**: Transport, Accommodation, Food, Activities, and Miscellaneous. This covers all travel fundamentals without overwhelming the user.
+5. **Budget Categories:** **5 categories**: Transport, Accommodation, Food, Activities, and Miscellaneous. This covers all travel fundamentals without overwhelming the user.
 
 ---
 
@@ -103,7 +100,7 @@ Here are the final scope decisions:
 
 1. **Home Page:** A **welcome hero section with quick aggregate stats** (Total Trips Planned, Total Destinations Visited, Total Budget) and a quick action button to start planning.
 
-2. **Saved Trips View:** A **responsive grid of Destination Cards** displaying destination image, name, duration, date, and budget. Clicking a card opens a full **Trip Detail View** displaying the daily itinerary schedule alongside the Chart.js pie chart.
+2. **Saved Trips View:** A **responsive grid of Destination Cards** displaying destination name, duration, date, and budget. Clicking a card opens a full **Trip Detail View** displaying the daily itinerary schedule alongside the Chart.js pie chart.
 
 3. **Trip Modifications:** **Delete allowed, no in-place editing**. Allow users to remove trips from disk with a confirmation prompt, while keeping trip content immutable once saved to avoid complex state synchronization.
 
@@ -136,11 +133,9 @@ Here is the complete technical architecture plan based on all your decisions:
   - `Navbar.jsx` — Top navigation bar with 3 tabs
   - `HomePage.jsx` — Hero section, aggregate metrics, recent trip cards
   - `NewTripPage.jsx` — Comprehensive trip planning form
-    - `ImagePicker.jsx` — Vector presets + custom upload preview
-    - `InterestTags.jsx` — Multi-select travel interest chips
     - `DayPlanner.jsx` — Tabbed daily itinerary schedule manager
   - `SavedTripsPage.jsx` — Search filter bar and responsive trip cards grid
-    - `TripCard.jsx` — Destination card with image, dates, duration, budget
+    - `TripCard.jsx` — Destination card with dates, duration, budget, and activity count
     - `TripDetailView.jsx` — Full itinerary timeline and budget inspection
       - `BudgetChart.jsx` — Chart.js canvas Pie chart with itemized breakdown
 
@@ -153,8 +148,6 @@ Here is the complete technical architecture plan based on all your decisions:
       "destination": "Kyoto, Japan",
       "startDate": "2026-11-20",
       "days": 4,
-      "image": "./assets/defaults/temple.svg",
-      "interests": ["Culture", "Food", "Photography"],
       "budget": {
         "total": 45000,
         "transport": 15000,
@@ -224,14 +217,14 @@ Vite transforms and bundles all React components, CSS modules, and Chart.js depe
 
 ### 3. Demonstrating IPC & File Persistence
 1. Navigate to **New Trip**.
-2. Enter a destination name (e.g. "Manali"), pick a start date and duration, select a cover image or upload one, adjust category budgets, and add scheduled activities in the Day Planner.
+2. Enter a destination name (e.g. "Manali"), pick a start date and duration, adjust category budgets, and add scheduled activities in the Day Planner.
 3. Click **Save Trip Plan**.
 4. **Viva Explanation:**
    *"When Save is clicked, `NewTripPage` sends the structured trip object to `window.api.saveTrip()`. The preload script forwards this across the IPC bridge via `ipcRenderer.invoke('save-trip')`. The main process handles this in `ipcMain.handle()`, updates `trips.json` using Node's `fs` module, and returns a success response."*
 
-### 4. Demonstrating Destination Cards & Chart.js
+### 4. Demonstrating Trip Cards & Chart.js
 1. Navigate to **Saved Trips**.
-2. Show the responsive card grid with images, badges, and search filtering by destination or interest.
+2. Show the responsive trip card grid showcasing duration, activity counts, budget metrics, search filtering by destination, and trip deletion.
 3. Click a card to open **Trip Detail View**.
 4. **Viva Explanation:**
    *"The trip detail screen passes the budget breakdown to `<BudgetChart />`. We register Chart.js ArcElement, Tooltip, and Legend components and render an interactive Pie chart on an HTML5 canvas with percentage calculations."*
@@ -266,7 +259,7 @@ Here are 5 impactful enhancements you can present as future scope during your vi
    - Implement HTML5 drag-and-drop to let travelers easily rearrange activities between different days as plans shift.
 
 5. **Packing List & Travel Checklist Module**:
-   - Add an interactive checklist with smart recommendations based on the trip's duration and selected travel interests (e.g., trekking gear for Adventure, camera lenses for Photography).
+   - Add an interactive checklist with smart recommendations based on the trip's destination and duration (e.g., weather-appropriate clothing, chargers, and essential travel documents).
 
 These show evaluators that you have a clear vision for how a production application evolves from a minor project into a scalable desktop product.
 

@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import ImagePicker from '../components/ImagePicker';
-import InterestTags from '../components/InterestTags';
 import DayPlanner from '../components/DayPlanner';
-import { DEFAULT_IMAGE } from '../utils/images';
 import './NewTripPage.css';
 
 /**
- * NewTripPage — Comprehensive trip creation form.
+ * NewTripPage — Streamlined trip creation form.
  *
- * Allows entering destination details, dates, visual theme/image,
- * interests, interactive day-by-day activities, and structured budget breakdown.
+ * Allows entering destination details, dates, interactive day-by-day
+ * activities, and structured budget breakdown.
  *
  * Props:
  *   onNavigate (function) - Callback to switch active view
@@ -19,8 +16,6 @@ function NewTripPage({ onNavigate }) {
   const [destination, setDestination] = useState('');
   const [startDate, setStartDate] = useState('');
   const [days, setDays] = useState(3);
-  const [image, setImage] = useState(DEFAULT_IMAGE);
-  const [interests, setInterests] = useState(['Relaxation']);
 
   // Dynamic Day-by-Day Itinerary State
   const [itinerary, setItinerary] = useState([
@@ -90,8 +85,6 @@ function NewTripPage({ onNavigate }) {
       destination: destination.trim(),
       startDate,
       days: Number(days),
-      image,
-      interests,
       budget: {
         total: calculatedTotal,
         ...budget
@@ -190,22 +183,12 @@ function NewTripPage({ onNavigate }) {
           </div>
         </section>
 
-        {/* Section 2: Destination Imagery */}
-        <section className="form-section card">
-          <ImagePicker selectedImage={image} onSelectImage={setImage} />
-        </section>
-
-        {/* Section 3: Interests */}
-        <section className="form-section card">
-          <InterestTags selectedInterests={interests} onChange={setInterests} />
-        </section>
-
-        {/* Section 4: Day-by-Day Itinerary Planner */}
+        {/* Section 2: Day-by-Day Itinerary Planner */}
         <section className="form-section card">
           <DayPlanner days={days} itinerary={itinerary} onChange={setItinerary} />
         </section>
 
-        {/* Section 5: Budget Allocation */}
+        {/* Section 3: Budget Allocation */}
         <section className="form-section card">
           <div className="budget-header">
             <div>

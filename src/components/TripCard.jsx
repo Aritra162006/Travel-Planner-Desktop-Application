@@ -1,22 +1,21 @@
 import React from 'react';
-import { resolveImage, DEFAULT_IMAGE } from '../utils/images';
 import './TripCard.css';
 
 /**
- * TripCard — Visual presentation card for a saved travel plan.
+ * TripCard — Clean presentation card for a saved travel plan.
  *
  * Props:
  *   trip (object) - Full trip object
- *   onSelect (function) - Callback when user clicks the card to inspect details
+ *   onSelect (function) - Callback when user clicks the card
+ *   onDelete (function) - Callback when user clicks delete button
  */
 function TripCard({ trip, onSelect, onDelete }) {
   const {
     destination = 'Unknown Destination',
     startDate,
     days = 1,
-    image,
     budget = {},
-    interests = []
+    itinerary = []
   } = trip;
 
   // Format date nicely (e.g. "Dec 12, 2026")
@@ -29,18 +28,17 @@ function TripCard({ trip, onSelect, onDelete }) {
     : 'Date not set';
 
   const totalBudget = (budget.total || 0).toLocaleString('en-IN');
+  const totalActivities = itinerary.reduce(
+    (count, d) => count + (d.activities?.length || 0),
+    0
+  );
 
   return (
     <div className="trip-card card" onClick={() => onSelect(trip)}>
-      <div className="card-media-wrapper">
-        <img
-          src={resolveImage(image)}
-          alt={destination}
-          className="card-image"
-          onError={(e) => {
-            e.target.src = DEFAULT_IMAGE;
-          }}
-        />
+      <div className="card-top-bar">
+        <span className="duration-pill">
+          {days} {days === 1 ? 'Day' : 'Days'} Trip
+        </span>
         {onDelete && (
           <button
             type="button"
@@ -54,15 +52,12 @@ function TripCard({ trip, onSelect, onDelete }) {
             🗑️
           </button>
         )}
-        <div className="duration-pill">
-          {days} {days === 1 ? 'Day' : 'Days'}
-        </div>
       </div>
 
       <div className="card-content">
-        <div className="card-header-row">
+        <div className="card-dest-row">
+          <span className="dest-icon">📍</span>
           <h3 className="card-destination">{destination}</h3>
-          <span className="card-budget">₹{totalBudget}</span>
         </div>
 
         <div className="card-date-row">
@@ -70,18 +65,16 @@ function TripCard({ trip, onSelect, onDelete }) {
           <span className="date-text">{formattedDate}</span>
         </div>
 
-        {interests && interests.length > 0 && (
-          <div className="card-interests-row">
-            {interests.slice(0, 3).map((item, idx) => (
-              <span key={idx} className="card-interest-tag">
-                {item}
-              </span>
-            ))}
-            {interests.length > 3 && (
-              <span className="card-interest-tag more">+{interests.length - 3}</span>
-            )}
+        <div className="card-metrics-row">
+          <div className="metric-box">
+            <span className="metric-label">Budget</span>
+            <span className="metric-val">₹{totalBudget}</span>
           </div>
-        )}
+          <div className="metric-box">
+            <span className="metric-label">Activities</span>
+            <span className="metric-val">{totalActivities} Items</span>
+          </div>
+        </div>
 
         <div className="card-footer">
           <span className="view-details-link">View Full Itinerary & Chart →</span>

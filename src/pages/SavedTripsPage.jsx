@@ -32,8 +32,6 @@ function SavedTripsPage({ onNavigate }) {
               destination: 'Manali, Himachal Pradesh',
               startDate: '2026-11-15',
               days: 5,
-              image: './assets/defaults/mountain.svg',
-              interests: ['Adventure', 'Nature', 'Photography'],
               budget: {
                 total: 28000,
                 transport: 9000,
@@ -55,8 +53,6 @@ function SavedTripsPage({ onNavigate }) {
               destination: 'Goa Beaches',
               startDate: '2026-12-05',
               days: 4,
-              image: './assets/defaults/beach.svg',
-              interests: ['Relaxation', 'Food', 'Nightlife'],
               budget: {
                 total: 22000,
                 transport: 7000,
@@ -87,9 +83,7 @@ function SavedTripsPage({ onNavigate }) {
   // Filter trips based on search query
   const filteredTrips = trips.filter((trip) => {
     const q = searchQuery.toLowerCase();
-    const matchesDest = trip.destination?.toLowerCase().includes(q);
-    const matchesInterests = trip.interests?.some((i) => i.toLowerCase().includes(q));
-    return matchesDest || matchesInterests;
+    return trip.destination?.toLowerCase().includes(q);
   });
 
   // Delete a trip by ID
@@ -149,7 +143,7 @@ function SavedTripsPage({ onNavigate }) {
           <input
             type="text"
             className="form-input search-input"
-            placeholder="Search trips by destination or interest..."
+            placeholder="Search trips by destination name..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
