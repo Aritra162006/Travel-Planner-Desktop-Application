@@ -120,6 +120,18 @@ app.whenReady().then(() => {
     }
   });
 
+  // IPC: Delete a trip from trips.json
+  ipcMain.handle('delete-trip', (_event, tripId) => {
+    try {
+      const data = readTrips();
+      data.trips = data.trips.filter((t) => t.id !== tripId);
+      writeTrips(data);
+      return { success: true };
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  });
+
   // Create the main application window
   createWindow();
 

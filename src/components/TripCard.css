@@ -47,6 +47,29 @@
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
+.card-delete-btn {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(232, 107, 107, 0.3);
+  font-size: 0.85rem;
+  padding: 4px 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: var(--transition);
+  opacity: 0.85;
+}
+
+.card-delete-btn:hover {
+  background: #FEE2E2;
+  border-color: var(--color-danger);
+  transform: scale(1.08);
+  opacity: 1;
+}
+
 .card-content {
   padding: 18px 20px;
   display: flex;

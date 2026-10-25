@@ -9,7 +9,7 @@ import './TripCard.css';
  *   trip (object) - Full trip object
  *   onSelect (function) - Callback when user clicks the card to inspect details
  */
-function TripCard({ trip, onSelect }) {
+function TripCard({ trip, onSelect, onDelete }) {
   const {
     destination = 'Unknown Destination',
     startDate,
@@ -41,6 +41,19 @@ function TripCard({ trip, onSelect }) {
             e.target.src = DEFAULT_IMAGE;
           }}
         />
+        {onDelete && (
+          <button
+            type="button"
+            className="card-delete-btn"
+            title={`Delete trip to ${destination}`}
+            onClick={(e) => {
+              e.stopPropagation();
+              onDelete(trip.id || trip.createdAt, destination);
+            }}
+          >
+            🗑️
+          </button>
+        )}
         <div className="duration-pill">
           {days} {days === 1 ? 'Day' : 'Days'}
         </div>

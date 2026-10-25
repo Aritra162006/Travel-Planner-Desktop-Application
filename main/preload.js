@@ -16,5 +16,6 @@ const { contextBridge, ipcRenderer } = require('electron');
 contextBridge.exposeInMainWorld('api', {
   saveTrip: (tripData) => ipcRenderer.invoke('save-trip', tripData),
   getTrips: () => ipcRenderer.invoke('get-trips'),
-  getStats: () => ipcRenderer.invoke('get-stats')
+  getStats: () => ipcRenderer.invoke('get-stats'),
+  deleteTrip: (tripId) => ipcRenderer.invoke('delete-trip', tripId)
 });

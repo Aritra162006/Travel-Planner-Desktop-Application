@@ -16,7 +16,7 @@ import './TripDetailView.css';
  *   trip (object) - Full trip object
  *   onBack (function) - Callback to return to trips gallery
  */
-function TripDetailView({ trip, onBack }) {
+function TripDetailView({ trip, onBack, onDelete }) {
   if (!trip) return null;
 
   const {
@@ -45,6 +45,15 @@ function TripDetailView({ trip, onBack }) {
         <button type="button" className="btn btn-secondary back-btn" onClick={onBack}>
           ← Back to Saved Trips
         </button>
+        {onDelete && (
+          <button
+            type="button"
+            className="delete-trip-btn"
+            onClick={() => onDelete(trip.id || trip.createdAt, destination)}
+          >
+            🗑️ Delete Trip
+          </button>
+        )}
       </div>
 
       {/* Hero Banner */}

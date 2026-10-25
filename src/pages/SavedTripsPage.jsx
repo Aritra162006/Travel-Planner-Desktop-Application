@@ -92,9 +92,35 @@ function SavedTripsPage({ onNavigate }) {
     return matchesDest || matchesInterests;
   });
 
+  // Delete a trip by ID
+  const handleDeleteTrip = async (tripId, destinationName) => {
+    const confirmed = window.confirm(
+      `Are you sure you want to delete your trip to "${destinationName}"? This action cannot be undone.`
+    );
+    if (!confirmed) return;
+
+    try {
+      if (window.api && window.api.deleteTrip) {
+        await window.api.deleteTrip(tripId);
+      }
+      setTrips((prev) => prev.filter((t) => (t.id || t.createdAt) !== tripId));
+      if (selectedTrip && (selectedTrip.id || selectedTrip.createdAt) === tripId) {
+        setSelectedTrip(null);
+      }
+    } catch (err) {
+      console.error('Failed to delete trip:', err);
+    }
+  };
+
   // If a specific trip is selected, display its full detail view
   if (selectedTrip) {
-    return <TripDetailView trip={selectedTrip} onBack={() => setSelectedTrip(null)} />;
+    return (
+      <TripDetailView
+        trip={selectedTrip}
+        onBack={() => setSelectedTrip(null)}
+        onDelete={handleDeleteTrip}
+      />
+    );
   }
 
   return (
@@ -161,6 +187,7 @@ function SavedTripsPage({ onNavigate }) {
               key={trip.id || trip.createdAt}
               trip={trip}
               onSelect={setSelectedTrip}
+              onDelete={handleDeleteTrip}
             />
           ))}
         </div>
