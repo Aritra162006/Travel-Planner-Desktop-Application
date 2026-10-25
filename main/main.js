@@ -61,14 +61,13 @@ function createWindow() {
     title: 'Travel Planner'
   });
 
-  // In development, load from Vite dev server
-  // In production, load the built HTML file
-  const isDev = !app.isPackaged;
-
-  if (isDev) {
+  const distPath = path.join(__dirname, '..', 'dist', 'index.html');
+  if (process.env.VITE_DEV_SERVER_URL) {
+    win.loadURL(process.env.VITE_DEV_SERVER_URL);
+  } else if (!app.isPackaged && !fs.existsSync(distPath)) {
     win.loadURL('http://localhost:5173');
   } else {
-    win.loadFile(path.join(__dirname, '..', 'dist', 'index.html'));
+    win.loadFile(distPath);
   }
 }
 
