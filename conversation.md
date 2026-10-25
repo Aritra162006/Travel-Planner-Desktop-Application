@@ -244,4 +244,33 @@ Vite transforms and bundles all React components, CSS modules, and Chart.js depe
 
 ## Message 7 (User)
 
-Perfect! The project meets all my requirements, adheres to my decisions, and gives me full confidence to present and defend my code.
+The core project meets all my requirements and runs smoothly. Looking ahead, what potential improvements or future enhancements would you recommend if I want to scale this application or discuss 'Future Scope' during my viva evaluation?
+
+---
+
+### Response from Assistant
+
+Here are 5 impactful enhancements you can present as future scope during your viva:
+
+1. **Multi-Currency Support & Conversion**:
+   - Allow users to plan trips in various currencies (USD, EUR, GBP, JPY, INR) with automatic exchange rate conversion.
+
+2. **Interactive Map Visualizations (Leaflet / OpenStreetMap)**:
+   - Integrate an offline-compatible map view showing pinned waypoints for each day's scheduled activities with route lines between stops.
+
+3. **PDF Export & Printable Itinerary Summary**:
+   - Utilize Electron's native `webContents.printToPDF()` to allow users to generate a downloadable travel dossier or printout before their trip.
+
+4. **Drag-and-Drop Activity Reordering**:
+   - Implement HTML5 drag-and-drop to let travelers easily rearrange activities between different days as plans shift.
+
+5. **Packing List & Travel Checklist Module**:
+   - Add an interactive checklist with smart recommendations based on the trip's duration and selected travel interests (e.g., trekking gear for Adventure, camera lenses for Photography).
+
+These show evaluators that you have a clear vision for how a production application evolves from a minor project into a scalable desktop product.
+
+---
+
+## Message 8 (User)
+
+These suggestions give me great talking points for the 'Future Scope' section of my viva presentation. The project is well-structured, thoroughly tested, and ready for submission.
