@@ -32,23 +32,12 @@ I want to make all architectural and logic decisions myself so that I can confid
 
 Welcome! This is an excellent topic for a desktop application. Since you want to drive every architectural decision yourself, let's explore the foundational requirements first:
 
-1. **Data Storage Approach**: How should saved trips be persisted on the machine?
-   - Focus: Plain JSON files on disk (simple file I/O using Node.js `fs`).
-
-2. **UI Framework**: What frontend framework should run inside Electron's renderer process?
-   - Focus: React (component-based architecture and state-driven rendering).
-
-3. **Budget Chart Library**: How should the visual budget chart be drawn?
-   - Focus: Chart.js (canvas-based visual charts).
-
-4. **Destination Imagery**: How should destination cover images be handled?
-   - Focus: Hybrid approach (curated default presets alongside custom user photo uploads).
-
-5. **Trip Itinerary Structure**: How should the itinerary be structured?
-   - Focus: Flexible user-defined itinerary for any destination.
-
-6. **Budget Categories**: What expense categories should be included?
-   - Focus: 5 core travel categories (Transport, Accommodation, Food, Activities, Miscellaneous).
+1. **Data Storage Approach**: How should saved trips be persisted on the local machine?
+2. **UI Framework**: What frontend library or framework do you want to use inside Electron's renderer process?
+3. **Budget Chart Library**: How should the budget breakdown chart be rendered visually?
+4. **Destination Imagery**: Where should the images on destination cards come from?
+5. **Trip Itinerary Structure**: How should users structure their trip itineraries?
+6. **Budget Categories**: What expense categories should be tracked in the budget breakdown?
 
 Please share your decisions on these areas.
 
