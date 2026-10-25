@@ -1,0 +1,192 @@
+.trip-detail-view {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 1050px;
+  margin: 0 auto;
+}
+
+.detail-top-bar {
+  display: flex;
+  align-items: center;
+}
+
+.back-btn {
+  font-size: 0.9rem;
+  padding: 8px 16px;
+}
+
+/* Banner */
+.detail-banner {
+  position: relative;
+  padding: 0;
+  overflow: hidden;
+  height: 280px;
+  border: 1px solid var(--color-border);
+}
+
+.banner-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.banner-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.2) 60%, transparent 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 28px 32px;
+  color: #FFFFFF;
+}
+
+.banner-tags {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.banner-pill {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.banner-pill.duration {
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(4px);
+}
+
+.banner-pill.budget {
+  background: var(--color-primary);
+}
+
+.banner-title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  line-height: 1.1;
+  margin-bottom: 6px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.banner-date {
+  font-size: 0.95rem;
+  opacity: 0.9;
+}
+
+/* Detail Grid */
+.detail-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 24px;
+}
+
+@media (max-width: 820px) {
+  .detail-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.detail-left-col,
+.detail-right-col {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.detail-subheading {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: 12px;
+}
+
+/* Itinerary Section */
+.itinerary-days-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 12px;
+}
+
+.itinerary-day-block {
+  display: flex;
+  gap: 16px;
+  padding: 14px 16px;
+  background: #FAFAFA;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.day-badge-col {
+  flex-shrink: 0;
+}
+
+.day-number-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+  font-size: 0.85rem;
+  font-weight: 700;
+  border-radius: 6px;
+}
+
+.day-activities-col {
+  flex: 1;
+}
+
+.detail-activities-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.detail-activity-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 0.95rem;
+  color: var(--color-text);
+}
+
+.act-dot {
+  color: var(--color-primary);
+  font-weight: bold;
+}
+
+.empty-itinerary-hint,
+.no-activities-text {
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+  font-style: italic;
+}
+
+/* Interests */
+.detail-interests-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.detail-interest-chip {
+  padding: 6px 14px;
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-radius: 20px;
+}
+
+/* Budget Card */
+.chart-description {
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+  margin-bottom: 8px;
+}

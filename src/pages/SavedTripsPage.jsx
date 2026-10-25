@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import TripCard from '../components/TripCard';
+import TripDetailView from './TripDetailView';
 import './SavedTripsPage.css';
 
 /**
@@ -90,6 +91,11 @@ function SavedTripsPage({ onNavigate }) {
     const matchesInterests = trip.interests?.some((i) => i.toLowerCase().includes(q));
     return matchesDest || matchesInterests;
   });
+
+  // If a specific trip is selected, display its full detail view
+  if (selectedTrip) {
+    return <TripDetailView trip={selectedTrip} onBack={() => setSelectedTrip(null)} />;
+  }
 
   return (
     <div className="saved-trips-page">
