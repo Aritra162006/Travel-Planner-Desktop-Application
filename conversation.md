@@ -105,7 +105,7 @@ Here are the final scope decisions:
 
 2. **Saved Trips View:** A **responsive grid of Destination Cards** displaying destination image, name, duration, date, and budget. Clicking a card opens a full **Trip Detail View** displaying the daily itinerary schedule alongside the Chart.js pie chart.
 
-3. **Trip Modifications:** **View only** once saved. Keeping trips read-only prevents complex state mutations and keeps the codebase solid and easy to explain.
+3. **Trip Modifications:** **Delete allowed, no in-place editing**. Allow users to remove trips from disk with a confirmation prompt, while keeping trip content immutable once saved to avoid complex state synchronization.
 
 4. **Export:** **No export**. Keep it simple and focused on a smooth on-screen experience.
 
@@ -126,6 +126,7 @@ Here is the complete technical architecture plan based on all your decisions:
     - `saveTrip(tripData)`
     - `getTrips()`
     - `getStats()`
+    - `deleteTrip(tripId)`
 - **Renderer Process (`src/`)**:
   - React 18 single-page app bundled with Vite.
   - State-driven navigation via `useState` (`'home' | 'new-trip' | 'saved-trips'`).
