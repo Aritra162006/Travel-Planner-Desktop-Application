@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ImagePicker from '../components/ImagePicker';
 import InterestTags from '../components/InterestTags';
 import DayPlanner from '../components/DayPlanner';
+import { DEFAULT_IMAGE } from '../utils/images';
 import './NewTripPage.css';
 
 /**
@@ -18,7 +19,7 @@ function NewTripPage({ onNavigate }) {
   const [destination, setDestination] = useState('');
   const [startDate, setStartDate] = useState('');
   const [days, setDays] = useState(3);
-  const [image, setImage] = useState('./assets/defaults/beach.svg');
+  const [image, setImage] = useState(DEFAULT_IMAGE);
   const [interests, setInterests] = useState(['Relaxation']);
 
   // Dynamic Day-by-Day Itinerary State

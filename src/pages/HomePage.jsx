@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { resolveImage, DEFAULT_IMAGE } from '../utils/images';
 import './HomePage.css';
 
 /**
@@ -109,11 +110,11 @@ function HomePage({ onNavigate }) {
                 onClick={() => onNavigate('saved-trips')}
               >
                 <img
-                  src={trip.image || './assets/defaults/beach.svg'}
+                  src={resolveImage(trip.image)}
                   alt={trip.destination}
                   className="recent-thumb"
                   onError={(e) => {
-                    e.target.src = './assets/defaults/beach.svg';
+                    e.target.src = DEFAULT_IMAGE;
                   }}
                 />
                 <div className="recent-info">

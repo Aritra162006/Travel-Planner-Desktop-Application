@@ -1,14 +1,6 @@
 import React, { useRef } from 'react';
+import { PRESET_IMAGES, resolveImage } from '../utils/images';
 import './ImagePicker.css';
-
-// Default presets mapping to assets in defaults folder
-const PRESET_IMAGES = [
-  { id: 'beach', name: 'Beach', src: './assets/defaults/beach.svg' },
-  { id: 'mountain', name: 'Mountain', src: './assets/defaults/mountain.svg' },
-  { id: 'city', name: 'City', src: './assets/defaults/city.svg' },
-  { id: 'temple', name: 'Temple', src: './assets/defaults/temple.svg' },
-  { id: 'forest', name: 'Forest', src: './assets/defaults/forest.svg' }
-];
 
 /**
  * ImagePicker — Allows selecting a curated destination preset or uploading a custom image.
@@ -75,7 +67,7 @@ function ImagePicker({ selectedImage, onSelectImage }) {
 
         {isCustomImage && (
           <div className="custom-preview-wrapper">
-            <img src={selectedImage} alt="Custom Destination" className="custom-preview-img" />
+            <img src={resolveImage(selectedImage)} alt="Custom Destination" className="custom-preview-img" />
             <span className="custom-badge">✓ Custom photo loaded</span>
           </div>
         )}

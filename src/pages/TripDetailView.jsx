@@ -1,5 +1,6 @@
 import React from 'react';
 import BudgetChart from '../components/BudgetChart';
+import { resolveImage, DEFAULT_IMAGE } from '../utils/images';
 import './TripDetailView.css';
 
 /**
@@ -49,11 +50,11 @@ function TripDetailView({ trip, onBack }) {
       {/* Hero Banner */}
       <div className="detail-banner card">
         <img
-          src={image || './assets/defaults/beach.svg'}
+          src={resolveImage(image)}
           alt={destination}
           className="banner-image"
           onError={(e) => {
-            e.target.src = './assets/defaults/beach.svg';
+            e.target.src = DEFAULT_IMAGE;
           }}
         />
         <div className="banner-overlay">

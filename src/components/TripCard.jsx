@@ -1,4 +1,5 @@
 import React from 'react';
+import { resolveImage, DEFAULT_IMAGE } from '../utils/images';
 import './TripCard.css';
 
 /**
@@ -33,11 +34,11 @@ function TripCard({ trip, onSelect }) {
     <div className="trip-card card" onClick={() => onSelect(trip)}>
       <div className="card-media-wrapper">
         <img
-          src={image || './assets/defaults/beach.svg'}
+          src={resolveImage(image)}
           alt={destination}
           className="card-image"
           onError={(e) => {
-            e.target.src = './assets/defaults/beach.svg';
+            e.target.src = DEFAULT_IMAGE;
           }}
         />
         <div className="duration-pill">
