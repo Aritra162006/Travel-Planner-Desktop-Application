@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ImagePicker from '../components/ImagePicker';
 import InterestTags from '../components/InterestTags';
+import DayPlanner from '../components/DayPlanner';
 import './NewTripPage.css';
 
 /**
  * NewTripPage — Comprehensive trip creation form.
  *
  * Allows entering destination details, dates, visual theme/image,
- * interests, and structured budget breakdown.
+ * interests, interactive day-by-day activities, and structured budget breakdown.
  *
  * Props:
  *   onNavigate (function) - Callback to switch active view
- *   onSaveSuccess (function) - Optional callback on successful save
  */
 function NewTripPage({ onNavigate }) {
   // Form State
@@ -20,6 +20,24 @@ function NewTripPage({ onNavigate }) {
   const [days, setDays] = useState(3);
   const [image, setImage] = useState('./assets/defaults/beach.svg');
   const [interests, setInterests] = useState(['Relaxation']);
+
+  // Dynamic Day-by-Day Itinerary State
+  const [itinerary, setItinerary] = useState([
+    { day: 1, activities: ['Arrival and hotel check-in', 'Evening local market walk'] },
+    { day: 2, activities: ['City sightseeing tour', 'Dinner at traditional restaurant'] },
+    { day: 3, activities: ['Souvenir shopping & departure'] }
+  ]);
+
+  // Adjust itinerary length if user changes days input
+  useEffect(() => {
+    setItinerary((prev) => {
+      return Array.from({ length: days }, (_, i) => {
+        const dayNum = i + 1;
+        const existing = prev.find((d) => d.day === dayNum);
+        return existing || { day: dayNum, activities: [] };
+      });
+    });
+  }, [days]);
 
   // Budget Breakdown State (5 Categories agreed in planning)
   const [budget, setBudget] = useState({
@@ -66,12 +84,6 @@ function NewTripPage({ onNavigate }) {
     }
 
     setIsSubmitting(true);
-
-    // Initial empty itinerary generated for the number of days
-    const itinerary = Array.from({ length: days }, (_, i) => ({
-      day: i + 1,
-      activities: [`Explore ${destination} highlights`]
-    }));
 
     const tripData = {
       destination: destination.trim(),
@@ -187,7 +199,12 @@ function NewTripPage({ onNavigate }) {
           <InterestTags selectedInterests={interests} onChange={setInterests} />
         </section>
 
-        {/* Section 4: Budget Allocation */}
+        {/* Section 4: Day-by-Day Itinerary Planner */}
+        <section className="form-section card">
+          <DayPlanner days={days} itinerary={itinerary} onChange={setItinerary} />
+        </section>
+
+        {/* Section 5: Budget Allocation */}
         <section className="form-section card">
           <div className="budget-header">
             <div>
