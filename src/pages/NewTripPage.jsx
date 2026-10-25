@@ -26,8 +26,11 @@ function NewTripPage({ onNavigate }) {
 
   // Adjust itinerary length if user changes days input
   useEffect(() => {
+    const numDays = parseInt(days, 10);
+    if (!numDays || numDays < 1) return;
+
     setItinerary((prev) => {
-      return Array.from({ length: days }, (_, i) => {
+      return Array.from({ length: numDays }, (_, i) => {
         const dayNum = i + 1;
         const existing = prev.find((d) => d.day === dayNum);
         return existing || { day: dayNum, activities: [] };
@@ -54,10 +57,17 @@ function NewTripPage({ onNavigate }) {
   );
 
   const handleBudgetChange = (category, value) => {
-    const numericValue = Math.max(0, parseInt(value, 10) || 0);
+    if (value === '') {
+      setBudget((prev) => ({
+        ...prev,
+        [category]: ''
+      }));
+      return;
+    }
+    const numericValue = Math.max(0, parseInt(value, 10));
     setBudget((prev) => ({
       ...prev,
-      [category]: numericValue
+      [category]: isNaN(numericValue) ? '' : numericValue
     }));
   };
 
@@ -74,7 +84,8 @@ function NewTripPage({ onNavigate }) {
       return;
     }
 
-    if (days < 1) {
+    const numericDays = parseInt(days, 10);
+    if (!numericDays || numericDays < 1) {
       setNotification({ type: 'error', message: 'Duration must be at least 1 day.' });
       return;
     }
@@ -84,10 +95,14 @@ function NewTripPage({ onNavigate }) {
     const tripData = {
       destination: destination.trim(),
       startDate,
-      days: Number(days),
+      days: numericDays,
       budget: {
         total: calculatedTotal,
-        ...budget
+        transport: Number(budget.transport) || 0,
+        accommodation: Number(budget.accommodation) || 0,
+        food: Number(budget.food) || 0,
+        activities: Number(budget.activities) || 0,
+        miscellaneous: Number(budget.miscellaneous) || 0
       },
       itinerary
     };
@@ -175,8 +190,22 @@ function NewTripPage({ onNavigate }) {
                 min="1"
                 max="60"
                 className="form-input"
+                placeholder="e.g. 5"
                 value={days}
-                onChange={(e) => setDays(Math.max(1, parseInt(e.target.value, 10) || 1))}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  if (val === '') {
+                    setDays('');
+                  } else {
+                    const parsed = parseInt(val, 10);
+                    setDays(isNaN(parsed) ? '' : parsed);
+                  }
+                }}
+                onBlur={() => {
+                  if (!days || Number(days) < 1) {
+                    setDays(1);
+                  }
+                }}
                 required
               />
             </div>

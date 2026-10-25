@@ -15,6 +15,9 @@ function DayPlanner({ days, itinerary = [], onChange }) {
   const [activeDayTab, setActiveDayTab] = useState(1);
   const [newActivityText, setNewActivityText] = useState('');
 
+  // Safely parse total days (handles empty string while user is typing)
+  const totalDays = Math.max(1, parseInt(days, 10) || 1);
+
   // Find activities for currently active tab
   const currentDayData = itinerary.find((d) => d.day === activeDayTab) || {
     day: activeDayTab,
@@ -25,7 +28,7 @@ function DayPlanner({ days, itinerary = [], onChange }) {
     e.preventDefault();
     if (!newActivityText.trim()) return;
 
-    const updated = Array.from({ length: days }, (_, i) => {
+    const updated = Array.from({ length: totalDays }, (_, i) => {
       const dayNum = i + 1;
       const existing = itinerary.find((d) => d.day === dayNum);
       const activities = existing ? [...existing.activities] : [];
@@ -68,7 +71,7 @@ function DayPlanner({ days, itinerary = [], onChange }) {
 
       {/* Days Tabs */}
       <div className="day-tabs-scroll">
-        {Array.from({ length: days }, (_, i) => i + 1).map((dayNum) => {
+        {Array.from({ length: totalDays }, (_, i) => i + 1).map((dayNum) => {
           const dayItems = itinerary.find((d) => d.day === dayNum)?.activities || [];
           return (
             <button
