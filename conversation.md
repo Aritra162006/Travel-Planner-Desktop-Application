@@ -238,6 +238,37 @@ Vite transforms and bundles all React components, CSS modules, and Chart.js depe
 
 ## Message 7 (User)
 
+During testing, I noticed a couple of usability and scope refinements needed:
+1. When attempting to clear the Duration field (or category budget fields) to enter a new number, the field immediately resets back to its default value (`1` or `0`) instead of remaining empty while typing.
+2. Let's streamline the application by removing the destination cover image picker and travel interest tags, focusing the project strictly on destination metadata, the day-by-day itinerary schedule, and the 5-category budget breakdown.
+
+How should we structure these fixes cleanly in React and Electron?
+
+---
+
+### Response from Assistant
+
+Both refinements have been implemented cleanly to optimize usability and code maintainability:
+
+### 1. Controlled Numeric Input State Management
+- **The Issue:**
+  In React controlled inputs, parsing with `Math.max(1, parseInt(e.target.value, 10) || 1)` on every keystroke causes backspacing to evaluate `""` to `NaN || 1`. This immediately resets the state back to `1` on that single keystroke, overwriting the user's input before they can type their intended number.
+- **The Solution:**
+  - **Permit Empty Intermediate String in State:** The `onChange` handler permits `val === ''` to remain an empty string in component state while the user is actively typing.
+  - **Deferred Normalization (`onBlur`):** An `onBlur` event handler validates that the input has a valid number (minimum 1 day) only when the user navigates away from the field.
+  - **Guarded Downstream Effects:** Upstream components like `DayPlanner` and the itinerary generation `useEffect` safely fall back to `Math.max(1, parseInt(days, 10) || 1)`, ensuring existing daily schedules do not collapse or reset while the user is editing the duration.
+  - **Applied to Budget Inputs:** The same pattern was applied to all 5 budget categories, allowing travelers to clear and enter expense values without experiencing sticky zeros.
+
+### 2. Streamlining Trip Scope
+- **Component Pruning:**
+  Removed `ImagePicker` and `InterestTags` components to keep the schema clean and maintainable.
+- **Card & Detail Redesign:**
+  Upgraded `TripCard.jsx` and `TripDetailView.jsx` to feature clean typographic headers, duration badges, activity counters, and delete confirmation, directing full attention to the scheduled itinerary and Chart.js budget distribution.
+
+---
+
+## Message 8 (User)
+
 The core project meets all my requirements and runs smoothly. Looking ahead, what potential improvements or future enhancements would you recommend if I want to scale this application or discuss 'Future Scope' during my viva evaluation?
 
 ---
@@ -265,6 +296,6 @@ These show evaluators that you have a clear vision for how a production applicat
 
 ---
 
-## Message 8 (User)
+## Message 9 (User)
 
 These suggestions give me great talking points for the 'Future Scope' section of my viva presentation. The project is well-structured, thoroughly tested, and ready for submission.
