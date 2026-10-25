@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" width="100%" height="100%">
+  <defs>
+    <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFD194" />
+      <stop offset="50%" stop-color="#D1913C" />
+      <stop offset="100%" stop-color="#70A6FF" />
+    </linearGradient>
+    <linearGradient id="seaGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#4facfe" />
+      <stop offset="100%" stop-color="#00f2fe" />
+    </linearGradient>
+  </defs>
+  <rect width="600" height="400" fill="url(#skyGrad)" />
+  <circle cx="300" cy="180" r="60" fill="#FFE57F" opacity="0.9" />
+  <path d="M0 240 Q150 220 300 240 T600 240 L600 400 L0 400 Z" fill="url(#seaGrad)" opacity="0.8" />
+  <path d="M0 290 Q200 270 400 300 T600 290 L600 400 L0 400 Z" fill="#FCE38A" />
+  <text x="300" y="360" text-anchor="middle" font-family="sans-serif" font-weight="bold" font-size="28" fill="#5A4A38">Tropical Beach</text>
+</svg>

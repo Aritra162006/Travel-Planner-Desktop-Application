@@ -1,0 +1,27 @@
+{
+  "name": "travel-planner",
+  "version": "1.0.0",
+  "description": "Desktop Travel Planner application with a graphical interface for planning and viewing trips",
+  "main": "main/main.js",
+  "scripts": {
+    "dev": "concurrently \"vite\" \"wait-on http://localhost:5173 && electron .\"",
+    "build": "vite build && electron-builder",
+    "preview": "vite preview"
+  },
+  "author": "Aritra Sharkhel",
+  "license": "MIT",
+  "dependencies": {
+    "chart.js": "^4.4.0",
+    "react": "^18.2.0",
+    "react-chartjs-2": "^5.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.2.0",
+    "concurrently": "^8.2.0",
+    "electron": "^28.0.0",
+    "electron-builder": "^24.9.0",
+    "vite": "^5.0.0",
+    "wait-on": "^7.2.0"
+  }
+}

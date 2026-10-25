@@ -1,0 +1,28 @@
+/* ===========================
+   New Trip Page Styles
+   =========================== */
+
+.new-trip-page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.page-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.page-subtitle {
+  font-size: 1rem;
+  color: var(--color-text-muted);
+  margin-top: -12px;
+}
+
+.placeholder-card {
+  padding: 48px;
+  text-align: center;
+  color: var(--color-text-muted);
+  font-style: italic;
+}

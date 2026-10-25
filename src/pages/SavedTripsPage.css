@@ -1,0 +1,9 @@
+/* ===========================
+   Saved Trips Page Styles
+   =========================== */
+
+.saved-trips-page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
