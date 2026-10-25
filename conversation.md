@@ -1,251 +1,258 @@
 # Travel Planner Desktop Application — Project Discussion & Ideation Log
 
-This document records the complete pair-programming dialogue and technical decision-making process between the developer (**User**) and the assistant (**AI**) for the development of the **Travel Planner Desktop Application**.
+This log records the complete discussion and technical decision-making between the developer (User) and the pair-programming assistant (AI) during the design and development of the Travel Planner application.
 
 ---
 
-### **Message 1 — Project Inception & Requirements**
+## Message 1 (User)
 
-**User:**
-> I am building a Minor Project: **Travel Planner – Electron Desktop Application**.
-> 
-> **Topic:** Desktop Travel Planner application with a graphical interface for planning and viewing trips.
-> 
-> **Basic Features:**
-> - Create a trip using forms: Enter destination, days, budget, and interests.
-> - View itinerary.
-> - View budget breakdown.
-> - Save planned trips locally.
-> 
-> **Unique Features:**
-> - Destination Cards: Show destinations with images and short details.
-> - Budget Chart: Display expenses visually using a simple chart.
-> 
-> **Development Direction:**
-> The desktop version will focus on a clean visual planning experience using forms, cards, and simple graphical displays.
-> 
-> I want to make all architectural and logic decisions myself so that I can confidently explain the entire project during evaluation and viva. Ideate with me, ask clarifying questions, and help me create a proper plan. Store our entire conversation history in `conversation.md`.
+I am building a Minor Project: **Travel Planner – Electron Desktop Application**.
 
----
+**Topic:**
+Desktop Travel Planner application with a graphical interface for planning and viewing trips.
 
-### **Message 2 — Architecture & Core Design Questions**
+**Basic Features:**
+- Create a trip using forms: Enter destination, days, budget, and interests.
+- View itinerary.
+- View budget breakdown.
+- Save planned trips locally.
 
-**AI:**
-> Welcome! This is a solid topic for a desktop application. Since you want to drive every architectural decision yourself, let's begin by establishing the technical foundations. Here are 6 key questions regarding data management and frontend structure:
-> 
-> 1. **Data Storage Approach**: How should saved trips be persisted on the machine?
->    - *Option A:* Plain JSON files on disk (human-readable, straightforward file I/O).
->    - *Option B:* SQLite database (structured relational tables, SQL queries).
->    - *Option C:* Browser localStorage / electron-store (key-value storage).
-> 2. **UI Framework**: What frontend technology should we run inside Electron's renderer process?
->    - *Option A:* Vanilla HTML + CSS + JavaScript (no build step, pure DOM).
->    - *Option B:* React (declarative component hierarchy, modern reactive state).
->    - *Option C:* Vue.js (template-driven, light runtime).
-> 3. **Budget Charting Library**: How should the visual budget chart be drawn?
->    - *Option A:* Chart.js (popular, canvas-based, clean API).
->    - *Option B:* Pure CSS/SVG charts (no dependencies, hand-coded).
->    - *Option C:* D3.js (highly flexible, but steeper learning curve).
-> 4. **Destination Imagery**: Where should the images on the destination cards come from?
->    - *Option A:* User file upload from their local machine.
->    - *Option B:* Pre-bundled presets (e.g. Beach, Mountain, City, Temple, Forest).
->    - *Option C:* Hybrid — offer pre-bundled presets with the ability to upload a custom image.
-> 5. **Trip Itinerary Structure**: How should the user construct their itinerary?
->    - *Option A:* Fixed destination templates.
->    - *Option B:* Free-form destination where the user builds their own custom itinerary.
-> 6. **Budget Categories**: What expense categories should be tracked?
->    - *Option A:* 5 categories: Transport, Accommodation, Food, Activities, Miscellaneous.
->    - *Option B:* User-defined custom categories.
+**Unique Features:**
+- Destination Cards: Show destinations with images and short details.
+- Budget Chart: Display expenses visually using a simple chart.
+
+**Development Direction:**
+The desktop version will focus on a clean visual planning experience using forms, cards, and simple graphical displays.
+
+I want to make all architectural and logic decisions myself so that I can confidently explain the entire project during evaluation and viva. Ideate with me, ask clarifying questions, and help me create a proper plan. Store our entire conversation history in `conversation.md`.
 
 ---
 
-### **Message 3 — User Architectural Decisions (Round 1)**
+### Response from Assistant
 
-**User:**
-> Here are my decisions for Round 1:
-> 1. **Data Storage:** **JSON files on disk**. It's clean, human-readable, and very easy to demonstrate file reading and writing (`fs` module in Node.js) during the viva without external database configuration overhead.
-> 2. **UI Framework:** **React**. A component-based structure is clean, modular, and allows me to showcase modern frontend skills.
-> 3. **Chart Library:** **Chart.js**. It provides clean charts, supports smooth animations, and integrates well with React.
-> 4. **Destination Images:** **Both (Hybrid)**. Provide pre-bundled presets (Beach, Mountains, City, etc.) for quick selection, but also allow custom photo uploads.
-> 5. **Itinerary Structure:** **User builds their own itinerary**. The user should be able to type in any destination and specify their own activities.
-> 6. **Budget Categories:** **5 categories**: Transport, Accommodation, Food, Activities, and Miscellaneous. This covers all travel fundamentals without overwhelming the user.
+Welcome! This is an excellent topic for a desktop application. Since you want to drive every architectural decision yourself, let's explore the foundational requirements first:
 
----
+1. **Data Storage Approach**: How should saved trips be persisted on the machine?
+   - Focus: Plain JSON files on disk (simple file I/O using Node.js `fs`).
 
-### **Message 4 — UI/UX & Interaction Design Questions**
+2. **UI Framework**: What frontend framework should run inside Electron's renderer process?
+   - Focus: React (component-based architecture and state-driven rendering).
 
-**AI:**
-> Great architectural choices. Now let's determine the UI/UX interaction model and visual hierarchy:
-> 
-> 7. **Application Navigation:** How should the user navigate between creating trips, viewing saved trips, and the dashboard?
-> 8. **Visual Theme & Aesthetic:** What color palette and design language fits the application?
-> 9. **Itinerary Granularity:** When building the day-by-day itinerary, how should activities be added?
-> 10. **Budget Chart Representation:** Which chart type best represents the 5 expense categories?
+3. **Budget Chart Library**: How should the visual budget chart be drawn?
+   - Focus: Chart.js (canvas-based visual charts).
 
----
+4. **Destination Imagery**: How should destination cover images be handled?
+   - Focus: Hybrid approach (curated default presets alongside custom user photo uploads).
 
-### **Message 5 — User UI/UX Decisions (Round 2)**
+5. **Trip Itinerary Structure**: How should the itinerary be structured?
+   - Focus: Flexible user-defined itinerary for any destination.
 
-**User:**
-> My decisions for Round 2:
-> 7. **App Navigation:** Use a **top navigation bar with 3 tabs: Home, New Trip, and Saved Trips**. Switch screens with a single `currentPage` state in `App.jsx`. **Do not use React Router** — state-based navigation is simpler to explain and avoids unnecessary routing dependencies in desktop Electron apps.
-> 8. **Visual Theme:** **Light theme with soft pastels** (clean, airy travel vibe with soft off-white background, ocean blues, and warm amber accents).
-> 9. **Itinerary Detail:** **Day-by-day planner**. The user specifies the number of days, and the form dynamically generates tabs for each day where activities can be added, viewed, and deleted.
-> 10. **Budget Chart:** **Pie chart**. A pie chart immediately communicates relative percentages of where the travel budget is allocated.
+6. **Budget Categories**: What expense categories should be included?
+   - Focus: 5 core travel categories (Transport, Accommodation, Food, Activities, Miscellaneous).
+
+Please share your decisions on these areas.
 
 ---
 
-### **Message 6 — Scope & Feature Finalization Questions**
+## Message 2 (User)
 
-**AI:**
-> Noted on state-based navigation and the day-by-day planner. Let's finalize the functional scope:
-> 
-> 11. **Home Screen Content:** What should appear on the Home tab?
-> 12. **Saved Trips Screen Layout:** How should saved trips be presented?
-> 13. **Trip Modifications:** Should saved trips be editable or read-only?
-> 14. **Export Capabilities:** Should there be an export option (e.g. PDF/Print)?
+Here are my decisions:
 
----
+1. **Data Storage:** **JSON files on disk**. It's clean, human-readable, and very easy to demonstrate file reading and writing (`fs` module in Node.js) during the viva without external database configuration overhead.
 
-### **Message 7 — User Final Decisions (Round 3)**
+2. **UI Framework:** **React**. A component-based structure is clean, modular, and allows me to showcase modern frontend skills.
 
-**User:**
-> 11. **Home Page:** A **welcome hero section with quick aggregate stats** (Total Trips Planned, Total Destinations Visited, Total Budget) and a quick action button to start planning.
-> 12. **Saved Trips View:** A **responsive grid of Destination Cards** displaying destination image, name, duration, date, and budget. Clicking a card opens a full **Trip Detail View** displaying the daily itinerary schedule alongside the Chart.js pie chart.
-> 13. **Trip Modifications:** **View only** once saved. Keeping trips read-only prevents complex state mutations and keeps the codebase solid and easy to explain.
-> 14. **Export:** **No export**. Keep it simple and focused on a smooth on-screen experience.
+3. **Chart Library:** **Chart.js**. It provides clean charts, supports smooth animations, and integrates well with React.
+
+4. **Destination Images:** **Both (Hybrid)**. Provide pre-bundled presets (Beach, Mountains, City, Temple, Forest) for quick selection, but also allow custom photo uploads.
+
+5. **Itinerary Structure:** **User builds their own itinerary**. The user should be able to type in any destination and specify their own activities.
+
+6. **Budget Categories:** **5 categories**: Transport, Accommodation, Food, Activities, and Miscellaneous. This covers all travel fundamentals without overwhelming the user.
 
 ---
 
-### **Message 8 — Comprehensive Project Architecture Plan**
+### Response from Assistant
 
-**AI:**
-> Here is the complete design specification based on all 14 of your decisions:
-> 
-> #### 1. Electron Process Architecture
-> - **Main Process (`main/main.js`)**:
->   - Controls native application window (`BrowserWindow`).
->   - Handles filesystem operations safely via `fs` using `ipcMain.handle`.
->   - Persists data to `trips.json` in the user application data directory.
-> - **Preload Script (`main/preload.js`)**:
->   - Strictly enforces security: `contextIsolation: true`, `nodeIntegration: false`.
->   - Exposes safe wrapper functions via `contextBridge.exposeInMainWorld('api', { ... })`:
->     - `saveTrip(tripData)`
->     - `getTrips()`
->     - `getStats()`
-> - **Renderer Process (`src/`)**:
->   - React 18 single-page app bundled with Vite.
->   - Screen coordination handled via `useState` (`'home' | 'new-trip' | 'saved-trips'`).
-> 
-> #### 2. Component Hierarchy
-> ```text
-> App.jsx
-> ├── Navbar.jsx (Top 3-tab navigation)
-> ├── HomePage.jsx (Hero banner, quick statistics, recent trips)
-> ├── NewTripPage.jsx (Multi-section trip planner form)
-> │   ├── ImagePicker.jsx (SVG presets + custom base64 uploader)
-> │   ├── InterestTags.jsx (Multi-select interest chips)
-> │   └── DayPlanner.jsx (Dynamic day-by-day activity manager)
-> └── SavedTripsPage.jsx (Search bar + trip cards grid)
->     ├── TripCard.jsx (Visual destination preview card)
->     └── TripDetailView.jsx (Full trip breakdown modal/view)
->         └── BudgetChart.jsx (Chart.js Pie chart & itemized breakdown)
-> ```
-> 
-> #### 3. Data Schema (`trips.json`)
-> ```json
-> {
->   "trips": [
->     {
->       "id": "trip_1730000000000",
->       "destination": "Kyoto, Japan",
->       "startDate": "2026-11-20",
->       "days": 4,
->       "image": "./assets/defaults/temple.svg",
->       "interests": ["Culture", "Food", "Photography"],
->       "budget": {
->         "total": 45000,
->         "transport": 15000,
->         "accommodation": 16000,
->         "food": 8000,
->         "activities": 4000,
->         "miscellaneous": 2000
->       },
->       "itinerary": [
->         { "day": 1, "activities": ["Arrive at Kyoto Station", "Check-in at Ryokan", "Gion evening walk"] },
->         { "day": 2, "activities": ["Fushimi Inari Shrine morning hike", "Kiyomizu-dera Temple"] },
->         { "day": 3, "activities": ["Arashiyama Bamboo Grove", "Tenryu-ji Temple", "Traditional matcha tea tasting"] },
->         { "day": 4, "activities": ["Nishiki Market food tour", "Souvenir shopping", "Bullet train departure"] }
->       ],
->       "createdAt": "2026-10-25T18:30:00.000Z"
->     }
->   ]
-> }
-> ```
-> 
-> Does this structure completely match your vision?
+Great choices. Now let's determine the UI/UX interaction model and visual hierarchy:
+
+1. **Application Navigation:** How should the user move between screens (creating trips, viewing saved trips, dashboard)?
+2. **Visual Theme & Aesthetic:** What color palette and design language fits the application?
+3. **Itinerary Granularity:** When building the day-by-day itinerary, how should activities be added?
+4. **Budget Chart Representation:** Which chart type best represents the 5 expense categories?
 
 ---
 
-### **Message 9 — Plan Approval & Strict Standards Instruction**
+## Message 3 (User)
 
-**User:**
-> Yes, the plan is approved! Make sure to always refer to the official Electron documentation for security best practices, window configuration, and IPC structure. Also, make sure all code is modular, thoroughly commented, and testable so that I can defend every file in my viva.
+My decisions for Round 2:
 
----
+1. **App Navigation:** Use a **top navigation bar with 3 tabs: Home, New Trip, and Saved Trips**. Switch screens with a single `currentPage` state in `App.jsx`. **Do not use React Router** — state-based navigation is simpler to explain and avoids unnecessary routing dependencies in desktop Electron apps.
 
-### **Message 10 — Implementation Details & Security Adherence**
+2. **Visual Theme:** **Light theme with soft pastels** (clean, airy travel vibe with soft off-white background, ocean blues, and warm amber accents).
 
-**AI:**
-> Understood. Here is how we follow the official Electron security standards:
-> 
-> 1. **No Node.js in the Renderer**:
->    `nodeIntegration: false` ensures external scripts cannot invoke system commands.
-> 2. **Context Isolation**:
->    `contextIsolation: true` ensures that code running in the preload script has a separate prototype context from the web page.
-> 3. **Controlled IPC Surface**:
->    We do not expose raw `ipcRenderer`. Only 3 explicit asynchronous methods (`saveTrip`, `getTrips`, `getStats`) are surfaced on `window.api`.
-> 4. **Safe Asynchronous Request-Response**:
->    Using `ipcMain.handle` in the main process and `ipcRenderer.invoke` in the preload script, which naturally return Promises and prevent main thread blocking.
-> 
-> Next, let's review the build phases:
-> - **Phase 1:** Electron & React scaffolding, Vite setup, Navbar, App skeleton, and design tokens.
-> - **Phase 2:** Trip creation form with Destination inputs, ImagePicker (presets + upload), and InterestTags.
-> - **Phase 3:** Dynamic DayPlanner component with tabbed day switching and activity management.
-> - **Phase 4:** Saved Trips gallery with search filter and interactive Destination Cards (`TripCard`).
-> - **Phase 5:** Detailed trip inspection view (`TripDetailView`) and Chart.js Pie budget chart (`BudgetChart`).
-> - **Phase 6:** Live analytics dashboard on the Home page (`HomePage`) and overall UI polish.
+3. **Itinerary Detail:** **Day-by-day planner**. The user specifies the number of days, and the form dynamically generates tabs for each day where activities can be added, viewed, and deleted.
+
+4. **Budget Chart:** **Pie chart**. A pie chart immediately communicates relative percentages of where the travel budget is allocated.
 
 ---
 
-### **Message 11 — Testing & Verification Walkthrough**
+### Response from Assistant
 
-**User:**
-> Walk me through how everything is tested and how to demonstrate the project.
+Noted on state-based navigation and the day-by-day planner. Let's finalize the functional scope:
 
-**AI:**
-> Here is how each module is verified and how you can demonstrate it during evaluation:
-> 
-> 1. **Frontend Compilation Test:**
->    Run `npm run build`. Vite transforms and bundles the React components and Chart.js dependencies into static assets in `dist/` in under 1 second with 0 syntax or bundling errors.
-> 2. **Desktop Application Launch:**
->    - Development mode: `npm run dev` (starts Vite dev server with hot reload and boots Electron).
->    - Production mode: `npx electron .` (loads the optimized `dist/index.html`).
-> 3. **Demonstrating IPC & Persistence:**
->    - Navigate to **New Trip**.
->    - Enter a destination (e.g., "Manali"), select dates, pick a cover image or upload one, adjust budget sliders, and add daily activities in the Day Planner.
->    - Click **Save Trip Plan**.
->    - Explain to the examiner: *"When I click save, the React component calls `window.api.saveTrip()`, which triggers `ipcRenderer.invoke('save-trip')`. The main process handles this via `ipcMain.handle()`, updates our `trips.json` file using Node's `fs` module, and returns a confirmation."*
-> 4. **Demonstrating Visual Charts & Destination Cards:**
->    - Navigate to **Saved Trips**. Show the card grid with images, badges, and search filtering.
->    - Click a card to open **Trip Detail View**.
->    - Point out the Chart.js pie chart: *"The budget distribution is dynamically calculated from the trip's budget object and rendered on a HTML5 Canvas using Chart.js with percentage tooltips."*
-> 5. **Demonstrating Home Analytics:**
->    - Navigate to **Home**.
->    - Point to the aggregate stat cards: *"The Home page queries `window.api.getStats()`, aggregating total planned journeys, distinct destinations, and cumulative budget across all saved trips."*
+1. **Home Screen Content:** What should appear on the Home tab?
+2. **Saved Trips Screen Layout:** How should saved trips be presented?
+3. **Trip Modifications:** Should saved trips be editable or read-only?
+4. **Export Capabilities:** Should there be an export option (e.g. PDF/Print)?
 
 ---
 
-### **Message 12 — Final Confirmation**
+## Message 4 (User)
 
-**User:**
-> Perfect! The project meets all my requirements, adheres to my decisions, and gives me full confidence to present and defend my code.
+Here are the final scope decisions:
+
+1. **Home Page:** A **welcome hero section with quick aggregate stats** (Total Trips Planned, Total Destinations Visited, Total Budget) and a quick action button to start planning.
+
+2. **Saved Trips View:** A **responsive grid of Destination Cards** displaying destination image, name, duration, date, and budget. Clicking a card opens a full **Trip Detail View** displaying the daily itinerary schedule alongside the Chart.js pie chart.
+
+3. **Trip Modifications:** **View only** once saved. Keeping trips read-only prevents complex state mutations and keeps the codebase solid and easy to explain.
+
+4. **Export:** **No export**. Keep it simple and focused on a smooth on-screen experience.
+
+---
+
+### Response from Assistant
+
+Here is the complete technical architecture plan based on all your decisions:
+
+### 1. Electron Process Architecture
+- **Main Process (`main/main.js`)**:
+  - Manages native window lifecycle (`BrowserWindow`).
+  - Handles secure IPC file I/O operations using `ipcMain.handle`.
+  - Persists data to `trips.json` in the user application data directory.
+- **Preload Script (`main/preload.js`)**:
+  - Enforces isolation: `contextIsolation: true`, `nodeIntegration: false`.
+  - Exposes safe APIs via `contextBridge.exposeInMainWorld('api', { ... })`:
+    - `saveTrip(tripData)`
+    - `getTrips()`
+    - `getStats()`
+- **Renderer Process (`src/`)**:
+  - React 18 single-page app bundled with Vite.
+  - State-driven navigation via `useState` (`'home' | 'new-trip' | 'saved-trips'`).
+
+### 2. Component Hierarchy
+- `App.jsx` — Root container with top-level `currentPage` state
+  - `Navbar.jsx` — Top navigation bar with 3 tabs
+  - `HomePage.jsx` — Hero section, aggregate metrics, recent trip cards
+  - `NewTripPage.jsx` — Comprehensive trip planning form
+    - `ImagePicker.jsx` — Vector presets + custom upload preview
+    - `InterestTags.jsx` — Multi-select travel interest chips
+    - `DayPlanner.jsx` — Tabbed daily itinerary schedule manager
+  - `SavedTripsPage.jsx` — Search filter bar and responsive trip cards grid
+    - `TripCard.jsx` — Destination card with image, dates, duration, budget
+    - `TripDetailView.jsx` — Full itinerary timeline and budget inspection
+      - `BudgetChart.jsx` — Chart.js canvas Pie chart with itemized breakdown
+
+### 3. Data Schema (`trips.json`)
+```json
+{
+  "trips": [
+    {
+      "id": "trip_1730000000000",
+      "destination": "Kyoto, Japan",
+      "startDate": "2026-11-20",
+      "days": 4,
+      "image": "./assets/defaults/temple.svg",
+      "interests": ["Culture", "Food", "Photography"],
+      "budget": {
+        "total": 45000,
+        "transport": 15000,
+        "accommodation": 16000,
+        "food": 8000,
+        "activities": 4000,
+        "miscellaneous": 2000
+      },
+      "itinerary": [
+        { "day": 1, "activities": ["Arrive at Kyoto Station", "Check-in at Ryokan", "Gion evening walk"] },
+        { "day": 2, "activities": ["Fushimi Inari Shrine morning hike", "Kiyomizu-dera Temple"] },
+        { "day": 3, "activities": ["Arashiyama Bamboo Grove", "Tenryu-ji Temple"] },
+        { "day": 4, "activities": ["Nishiki Market food tour", "Souvenir shopping"] }
+      ],
+      "createdAt": "2026-10-25T18:30:00.000Z"
+    }
+  ]
+}
+```
+
+---
+
+## Message 5 (User)
+
+The plan is approved. Always refer to official Electron documentation for security standards, window setup, and IPC communication. Make sure all code is clean, modular, and well-commented so I can defend every file in my viva.
+
+---
+
+### Response from Assistant
+
+Understood. Here is how our architecture strictly adheres to official Electron documentation:
+
+1. **Context Isolation (`contextIsolation: true`)**:
+   Ensures the preload script and renderer execute in separate JavaScript contexts. Web scripts cannot access Node.js primitives or Electron internals directly.
+
+2. **Node Integration Disabled (`nodeIntegration: false`)**:
+   Prevents any renderer code from executing native Node commands, eliminating common security vulnerabilities.
+
+3. **Narrow IPC Surface**:
+   We never expose the raw `ipcRenderer` object. Instead, `contextBridge.exposeInMainWorld` only exposes 3 explicit asynchronous methods: `saveTrip`, `getTrips`, and `getStats`.
+
+4. **Promise-Based IPC (`ipcMain.handle` / `ipcRenderer.invoke`)**:
+   Uses the modern two-way IPC request-response pattern recommended by Electron, avoiding callback spaghetti or blocking the main process thread.
+
+---
+
+## Message 6 (User)
+
+Walk me through how everything is tested and how to demonstrate the project during evaluation.
+
+---
+
+### Response from Assistant
+
+Here is how each module is verified and how to demonstrate the project during evaluation:
+
+### 1. Build & Compilation Verification
+Run:
+```bash
+npm run build
+```
+Vite transforms and bundles all React components, CSS modules, and Chart.js dependencies into `dist/` with zero syntax errors.
+
+### 2. Application Execution
+- **Development Mode:** `npm run dev` (starts Vite dev server and opens Electron).
+- **Production Mode:** `npx electron .` (loads the production-optimized `dist/index.html`).
+
+### 3. Demonstrating IPC & File Persistence
+1. Navigate to **New Trip**.
+2. Enter a destination name (e.g. "Manali"), pick a start date and duration, select a cover image or upload one, adjust category budgets, and add scheduled activities in the Day Planner.
+3. Click **Save Trip Plan**.
+4. **Viva Explanation:**
+   *"When Save is clicked, `NewTripPage` sends the structured trip object to `window.api.saveTrip()`. The preload script forwards this across the IPC bridge via `ipcRenderer.invoke('save-trip')`. The main process handles this in `ipcMain.handle()`, updates `trips.json` using Node's `fs` module, and returns a success response."*
+
+### 4. Demonstrating Destination Cards & Chart.js
+1. Navigate to **Saved Trips**.
+2. Show the responsive card grid with images, badges, and search filtering by destination or interest.
+3. Click a card to open **Trip Detail View**.
+4. **Viva Explanation:**
+   *"The trip detail screen passes the budget breakdown to `<BudgetChart />`. We register Chart.js ArcElement, Tooltip, and Legend components and render an interactive Pie chart on an HTML5 canvas with percentage calculations."*
+
+### 5. Demonstrating Live Home Analytics
+1. Navigate to **Home**.
+2. **Viva Explanation:**
+   *"On mount, `HomePage` invokes `window.api.getStats()`. The main process parses `trips.json` to calculate total trips planned, distinct destinations, and cumulative budget across all trips."*
+
+---
+
+## Message 7 (User)
+
+Perfect! The project meets all my requirements, adheres to my decisions, and gives me full confidence to present and defend my code.
